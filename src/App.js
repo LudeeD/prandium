@@ -16,7 +16,7 @@ export default function App() {
     // see ../craco.config.js
     try {
       const sqlPromise = initSqlJs({ locateFile: () => sqlWasm });
-      const dataPromise = fetch("/index.db").then(res => res.arrayBuffer());
+      const dataPromise = fetch("/prandium/index.db").then(res => res.arrayBuffer());
       const [SQL, buf] = await Promise.all([sqlPromise, dataPromise])
       const db = new SQL.Database(new Uint8Array(buf));
       setDb(db);
