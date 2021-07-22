@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/prandium/static/css/main.ab88c31b.chunk.css",
-    "main.js": "/prandium/static/js/main.8ba19de3.chunk.js",
-    "main.js.map": "/prandium/static/js/main.8ba19de3.chunk.js.map",
+    "main.js": "/prandium/static/js/main.ceebe834.chunk.js",
+    "main.js.map": "/prandium/static/js/main.ceebe834.chunk.js.map",
     "runtime-main.js": "/prandium/static/js/runtime-main.6d14b312.js",
     "runtime-main.js.map": "/prandium/static/js/runtime-main.6d14b312.js.map",
     "static/css/2.013db2dd.chunk.css": "/prandium/static/css/2.013db2dd.chunk.css",
-    "static/js/2.2dff5f95.chunk.js": "/prandium/static/js/2.2dff5f95.chunk.js",
-    "static/js/2.2dff5f95.chunk.js.map": "/prandium/static/js/2.2dff5f95.chunk.js.map",
+    "static/js/2.7f5bfcc5.chunk.js": "/prandium/static/js/2.7f5bfcc5.chunk.js",
+    "static/js/2.7f5bfcc5.chunk.js.map": "/prandium/static/js/2.7f5bfcc5.chunk.js.map",
     "index.html": "/prandium/index.html",
     "sql-wasm.wasm": "/prandium/sql-wasm-5bb75ff49a85d6b67f21bb7c25ab1b64.wasm",
     "static/css/2.013db2dd.chunk.css.map": "/prandium/static/css/2.013db2dd.chunk.css.map",
     "static/css/main.ab88c31b.chunk.css.map": "/prandium/static/css/main.ab88c31b.chunk.css.map",
-    "static/js/2.2dff5f95.chunk.js.LICENSE.txt": "/prandium/static/js/2.2dff5f95.chunk.js.LICENSE.txt"
+    "static/js/2.7f5bfcc5.chunk.js.LICENSE.txt": "/prandium/static/js/2.7f5bfcc5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6d14b312.js",
     "static/css/2.013db2dd.chunk.css",
-    "static/js/2.2dff5f95.chunk.js",
+    "static/js/2.7f5bfcc5.chunk.js",
     "static/css/main.ab88c31b.chunk.css",
-    "static/js/main.8ba19de3.chunk.js"
+    "static/js/main.ceebe834.chunk.js"
   ]
 }
