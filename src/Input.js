@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -39,31 +39,58 @@ export default function Input({ updatecb }) {
         setInput(item)
     }
 
+    const numberInput = useRef(null);
+    const get_random_btn = () => {
+        numberInput.current.value = 1
+        update_number(1)
+        updatecb(input)
+    }
+
+    const get_week_btn = () => {
+        numberInput.current.value = 14
+        update_number(14)
+        
+    }
+
+    useEffect(() => {updatecb(input)}, [input])
+
+
     return (
+        <>
         <Row>
             <InputGroup className="mb-3">
-                <Button onClick={() => updatecb(input)} >Get Recipes</Button>
+                <Button style={{backgroundColor: "#0B4F6C", borderColor: "#0B4F6C"}} onClick={() => updatecb(input)} >Get Recipes</Button>
                 <FormControl
+                    id="name"
                     aria-label="name"
                     placeholder="name e.g: pasta" 
                     onChange={e => update_name(e.target.value)}
                     />
                 <FormControl
+                    id="ingredients"
                     aria-label="ingredients"
                     placeholder="ingredients e.g: tomato"
                     onChange={e => update_ingredients(e.target.value)}
                     />
                 <FormControl
+                    id="tag"
                     aria-label="tag"
                     placeholder="tags e.g: vegetarian; full-meal"
                     onChange={e => update_tags(e.target.value)}
                     />
                 <FormControl
+                    id="number"
                     aria-label="number"
                     placeholder="number e.g: 10"
                     onChange={e => update_number(e.target.value)}
+                    ref={numberInput}
                     />
             </InputGroup>
         </Row>
+        <Row>
+            <Col sm={2}> <Button className="w-100" style={{backgroundColor: "#0B4F6C", borderColor: "#0B4F6C"}} onClick={() => get_random_btn()} >Random</Button> </Col>
+            <Col sm={2}> <Button className="w-100" style={{backgroundColor: "#0B4F6C", borderColor: "#0B4F6C"}} onClick={() => get_week_btn()} >Week</Button> </Col>
+        </Row>
+        </>
     );
 }

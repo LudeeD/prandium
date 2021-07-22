@@ -45,22 +45,20 @@ function MainRecipes({ db }) {
   function get_recipes(where) {
     try {
       let query = `SELECT DISTINCT
-        recipes_info.title
+        recipes_info.title, recipes_info.path
         FROM recipes_info
         INNER JOIN recipes_ingredients ON recipes_ingredients.recipe_id = recipes_info.recipe_id
         INNER JOIN ingredients ON ingredients.ingredient_id = recipes_ingredients.ingredient_id
         INNER JOIN recipes_tags ON recipes_tags.recipe_id = recipes_info.recipe_id
-        INNER JOIN tags ON tags.tag_id = recipes_tags.recipes_tags
+        INNER JOIN tags ON tags.tag_id = recipes_tags.tag_id
         `
-
       if (where) {
         query += where
       }
-
-      
-
       console.log(query)
-      setResults(db.exec(query))
+      let results = db.exec(query)
+      console.log(results)
+      setResults(results[0]['values'])
       setError(null)
     } catch (err) {
       setError(err)
@@ -96,20 +94,14 @@ function MainRecipes({ db }) {
   }
 
   return (
-    <Container>
+    <Container >
       <br></br>
       <Col><h1>Recipes for everyone 🍲</h1></Col>
+      <pre>Recipe planner, generator, finder... everything recipe related. </pre> 
       <Input updatecb={inputUpdated}></Input>
       <pre className="error">{(error || "").toString()}</pre>
-
-      <pre>
-        {
-          // results contains one object per select statement in the query
-          results.map(({ columns, values }, i) => (
-            <ResultsTable key={i} columns={columns} values={values} />
-          ))
-        }
-      </pre>
+      
+      <Table values={results}></Table>
 
     </Container>
   );
@@ -137,7 +129,7 @@ function SQLRepl({ db }) {
   }
 
   return (
-    <div className="App">
+    <div className="App" >
       <h1>React SQL interpreter</h1>
 
       <textarea

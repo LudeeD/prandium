@@ -11,14 +11,54 @@ def recipe_already_indexed(name):
     for r in rows: print(r)
     return len(rows) > 0
 
+def add_tag(name, recipe_id):
+    print(name)
+    cur = con.cursor()
+    cur.execute("SELECT tag_id FROM tags WHERE name=?", (name,) )
+    rows = cur.fetchall()
+    id = 0
+    if len(rows) == 0:  
+        sql = '''INSERT INTO tags(name) VALUES(?)'''
+        cur.execute(sql, (name,))
+        con.commit()
+        id = cur.lastrowid
+    else:
+        id = rows[0][0]
+    
+    sql = '''INSERT INTO recipes_tags(recipe_id, tag_id) VALUES(?,?)'''
+    print(f"recipe id{recipe_id} id{id}")
+    cur.execute(sql, (recipe_id,id))
+    con.commit()
+    
+    return rows
+
+def add_ingredient(name, quantity, recipe_id):
+    print(name)
+    cur = con.cursor()
+    cur.execute("SELECT ingredient_id FROM ingredients WHERE name=?", (name,) )
+    rows = cur.fetchall()
+    id = 0
+    if len(rows) == 0:  
+        sql = '''INSERT INTO ingredients(name) VALUES(?)'''
+        cur.execute(sql, (name,))
+        con.commit()
+        id = cur.lastrowid
+    else:
+        id = rows[0][0]
+    
+    sql = '''INSERT INTO recipes_ingredients(recipe_id, ingredient_id, quantity) VALUES(?,?,?)'''
+    cur.execute(sql, (recipe_id,id,quantity,))
+    con.commit()
+    
+    return rows
+
 def add_new_recipe(title, path):
     cur = con.cursor()
     sql = ''' INSERT INTO recipes_info(title, path)
               VALUES(?,?) '''
     cur.execute(sql, (title, path))
     con.commit()
-    cur.execute('SELECT last_insert_rowid()')
-    id = cur.fetchall()[0][0]
+    id = cur.lastrowid
     print(id)
     return id
 
@@ -49,7 +89,7 @@ def parse_recipe(folder, filename):
     ingredients = []
     path = os.path.join(folder, filename)
     with open(path) as f:
-        recip_id = -1;
+        recipe_id = -1;
         for index, line in enumerate(f):
             print("Line {}: {}".format(index, line.strip()))
             if line == '\n':
@@ -65,21 +105,19 @@ def parse_recipe(folder, filename):
                 # Tags Section
                 if section_title: section_title = False; continue
                 tag = ''.join(ch for ch in line if ch.isalnum())
-                tags.append(tag)
-                print(f'pila')
-                add_new_tag(recipe_id, tag)
+                print(f"Tag => {tag}")
+                #add_new_tag(recipe_id, tag)
+                add_tag(tag, recipe_id)
             elif section == 2:
                 # Ingredients Section
                 if section_title: section_title = False; continue
-                # 0 -
-                # 1 ammount
+                # 0 > "-"
+                # 1 > ammount
                 # 2.. name
                 ingredient = line.split(' ');
                 ammount = ingredient[1]
-                name = ' '.join(ingredient[2:])
-                ingredients.append((ammount, name))
-                print(f'pila')
-                add_new_ingredient(recipe_id, name)
+                name = ' '.join(ingredient[2:]).strip()
+                add_ingredient(name, ammount, recipe_id)
             elif section == 3:
                 break
 

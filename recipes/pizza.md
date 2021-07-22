@@ -1,22 +1,17 @@
-# Banana Bread
+# Pizza
 
 tags:
-- breakfast
-- baking
+- meal 
 
 ingredients:
-- 4 bananas
-- 1/2 cup butter
-- 1/2 cup sugar
-- 2 eggs
-- 2 cups flour
-- 1/2 tsp baking soda
-- 1 tsp baking powder
-- pinch salt
-- 1/4 cup nuts (we like pecans)
+- 1 pizza dough
+- some olives
+- some shrooms
+- some tomato sauce
+- 1 mozarella cheese
 
 directions:
-- Beat the eggs, then cream with the butter and sugar
-- Mix in bananas, then flour, baking soda/powder, salt, and nuts
-- Add to greased and floured pan
-- Bake until brown/cracked, toothpick comes out clean
+- tomato sauce onto pizza dough
+- add olives and shrooms
+- cheese on top
+- go to oven 45 min

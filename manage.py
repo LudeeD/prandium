@@ -6,7 +6,9 @@ def setup_db():
     cur = con.cursor()
     # Create table
     cur.execute('''CREATE TABLE IF NOT EXISTS recipes_info
-                   (recipe_id INTEGER PRIMARY KEY, title TEXT NOT NULL, path TEXT NOT NULL)''')
+                   (recipe_id INTEGER PRIMARY KEY,
+                   title TEXT NOT NULL,
+                   path TEXT NOT NULL)''')
     con.commit()
 
     cur.execute('''CREATE TABLE IF NOT EXISTS ingredients
@@ -25,16 +27,9 @@ def setup_db():
     cur.execute('''CREATE TABLE IF NOT EXISTS recipes_tags
                    (recipes_tags INTEGER PRIMARY KEY,
                     recipe_id INTEGER NOT NULL, 
-                    tag_id INTEGER NOT NULL, quantity TEXT NOT NULL, 
+                    tag_id INTEGER NOT NULL,
                     FOREIGN KEY(tag_id) REFERENCES tags(tag_id),
                     FOREIGN KEY(recipe_id) REFERENCES recipes_info(recipe_id))''')
-
-
-
-
-
-
-
 
     # Save (commit) the changes
     con.commit()
@@ -56,6 +51,10 @@ def reset():
     cur.execute('DELETE FROM recipes_tags;',);
     print('We have deleted', cur.rowcount, 'records from the table.')
     cur.execute('DELETE FROM recipes_ingredients;',);
+    print('We have deleted', cur.rowcount, 'records from the table.')
+    cur.execute('DELETE FROM ingredients;',);
+    print('We have deleted', cur.rowcount, 'records from the table.')
+    cur.execute('DELETE FROM tags;',);
     print('We have deleted', cur.rowcount, 'records from the table.')
     #commit the changes to db			
     con.commit()
