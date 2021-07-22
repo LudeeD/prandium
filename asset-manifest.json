@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/prandium/static/css/main.ab88c31b.chunk.css",
-    "main.js": "/prandium/static/js/main.ceebe834.chunk.js",
-    "main.js.map": "/prandium/static/js/main.ceebe834.chunk.js.map",
+    "main.js": "/prandium/static/js/main.7380050a.chunk.js",
+    "main.js.map": "/prandium/static/js/main.7380050a.chunk.js.map",
     "runtime-main.js": "/prandium/static/js/runtime-main.6d14b312.js",
     "runtime-main.js.map": "/prandium/static/js/runtime-main.6d14b312.js.map",
     "static/css/2.013db2dd.chunk.css": "/prandium/static/css/2.013db2dd.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.013db2dd.chunk.css",
     "static/js/2.7f5bfcc5.chunk.js",
     "static/css/main.ab88c31b.chunk.css",
-    "static/js/main.ceebe834.chunk.js"
+    "static/js/main.7380050a.chunk.js"
   ]
 }
