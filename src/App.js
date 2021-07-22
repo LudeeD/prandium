@@ -97,7 +97,7 @@ function MainRecipes({ db }) {
     <Container >
       <br></br>
       <Col><h1>Recipes for everyone 🍲</h1></Col>
-      <pre>Recipe planner, generator, finder... everything recipe related. </pre> 
+      <pre>Recipe planner 📅, generator ⚙️, finder 🔎... everything recipe related. More info ℹ️ <a href="https://github.com/LudeeD/prandium">here</a></pre> 
       <Input updatecb={inputUpdated}></Input>
       <pre className="error">{(error || "").toString()}</pre>
       
