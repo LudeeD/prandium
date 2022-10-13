@@ -1,112 +1,87 @@
-use clap::Parser;
-use reqwest;
-use select::document::Document;
-use select::predicate::{Class, Name, Predicate};
-use std::io;
+use glob::glob;
+use handlebars::Handlebars;
+use serde_json::json;
+use std::env;
+use std::fs::{self, File};
+use std::io::Write;
+use std::path::PathBuf;
 
-use serde::{Serialize, Deserialize};
-use serde_json;
-use uuid::Uuid;
-use sha1::{Sha1, Digest};
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Ingredient {
-    name: String,
-    description: Option<String>,
-    quantity: u32,
-    unit: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Recipe {
-    id: String,
-    title: String,
-    menu_type: String,
-    classification: String,
-    servings: String,
-    time_minutes: String,
-    //ingredients: Vec<Ingredient>,
-    //instructions: Vec<String>
-}
-
-#[derive(Parser, Debug)]
-#[clap(name = "prandium")]
-struct Opts {
-    /// URL to parse
-    url: String,
-}
+mod theme;
+use theme::TEMPLATE_INDEX;
 
 fn main() {
-    println!("Hello, world!");
+    println!("Hello from Prandium");
 
-    let hello = Opts::parse();
+    let args: Vec<String> = env::args().collect();
+    let outpath = args.get(1);
+    if outpath.is_none() {
+        println!("No outpath provided");
+        return;
+    }
+    let outpath = PathBuf::from(outpath.unwrap());
+    let path = env::current_dir().unwrap();
 
-    println!("{}", hello.url);
+    let mut hbs = Handlebars::new();
 
-    pingo_doce_parser(&hello.url);
+    hbs.register_template_string(
+        "index",
+        String::from_utf8(TEMPLATE_INDEX.to_vec()).expect("TODO"),
+    )
+    .unwrap();
 
-}
+    hbs.register_template_string(
+        "recipe",
+        String::from_utf8(TEMPLATE_RECIPE.to_vec()).expect("TODO"),
+    )
+    .unwrap();
 
-fn pingo_doce_parser(url: &str) {
+    let g = format!("{}/**/*.md", path.display());
+    let mut index_files = Vec::new();
 
-    let resp = reqwest::blocking::get(url).unwrap();
-    assert!(resp.status().is_success());
+    let mut recipe_id = 1;
+    for path in glob(&g).unwrap().filter_map(Result::ok) {
+        let mut output_file = outpath.clone();
+        let file_name = path.file_name().expect("TODO");
 
-    let document = Document::from_read(resp).unwrap();
+        if file_name == "README" {
+            continue;
+        };
 
+        print!("Found {:?} ", file_name);
+        //let title = parse(&path)?;
+        let title = "Comida dormida".to_string();
+        let metadata = fs::metadata(file_name).unwrap();
+        let time = metadata.modified().unwrap();
 
-    let mut recipe = None;
+        let filename = path.clone();
+        let filename = filename.file_name().unwrap().to_owned();
 
-    // same as before
-    for node in document.find(Class("recipe-page")) {
-        let title = node.find(Class("recipe-title")).next().unwrap().text();
-        println!("Found Recipe : {}", title);
+        let render = hbs
+            .render("recipe", &json!({ "ingredients":{}, "instructions": {} }))
+            .unwrap();
 
-        let classification = String::from("vegetariano");
-        let menu_type = String::from("refeição");
-        // let mut classification = String::with_capacity(10);
-        // println!("Classificação[vegetariano, carne, peixe]:");
-        // io::stdin().read_line(&mut classification).expect("Error reading input");
-        // classification.truncate(classification.trim_end().len());
+        output_file.push(recipe_id.to_string());
+        output_file.set_extension("html");
+        let mut file = File::create(output_file.clone()).unwrap();
+        file.write_all(render.as_bytes()).expect("TODO");
 
+        let info = output_file
+            .file_name()
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
+        index_files.push((info, title, time));
 
-        let mut servings = String::new();
-        let mut time_minutes = String::new();
-        for (i,items) in node.find(Class("info")).enumerate() {
-            match i {
-                0 => time_minutes = items.text(),
-                2 => servings = items.text(),
-                _ => {}
-            }
-        }
-        println!("porções: {}", servings);
-        println!("tempo: {}", time_minutes);
-
-        let mut hasher = Sha1::new();
-        // process input message
-        hasher.update(title.clone().into_bytes());
-
-        let hash = hasher.finalize();
-
-        let id = format!("{:x}", hash);
-
-        recipe = Some(
-            Recipe{
-                id,
-                title,
-                menu_type,
-                classification,
-                servings,
-                time_minutes,
-            }
-        )
+        recipe_id += 1;
     }
 
+    let mut index_file = outpath.clone();
+    index_file.push("index");
+    index_file.set_extension("html");
 
-    let recipe = recipe.unwrap();
-    let serialized = serde_json::to_string(&recipe).unwrap();
+    let render = hbs.render("index", &json!({})).expect("TODO");
 
-
-    println!("{}", serialized);
-
+    let mut file = File::create(index_file).unwrap();
+    file.write_all(&render.as_bytes()).expect("TODO");
 }
