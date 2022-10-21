@@ -53,8 +53,8 @@ fn collect_output_folder_from_args() -> PathBuf {
 
 fn generate_recipe_pages(handlebars: &Handlebars, recipes: &Vec<Recipe>) {
     let output_folder = collect_output_folder_from_args();
-    for recipe in recipes {
-        let mut file = File::create(output_folder.join(&recipe.name).with_extension("html"))
+    for (i, recipe) in recipes.iter().enumerate() {
+        let mut file = File::create(output_folder.join(i.to_string()).with_extension("html"))
             .expect("Unable to create file");
         let data = json!({
             "name": recipe.name,
@@ -76,9 +76,7 @@ fn main() {
     let mut hbs = Handlebars::new();
     register_templates(&mut hbs);
 
-    println!("oink");
     let recipes = parse_folder();
-    println!("oink");
 
     generate_recipe_pages(&mut hbs, &recipes);
 

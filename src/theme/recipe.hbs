@@ -5,68 +5,89 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comida da Boa</title>
-    <meta name="description" content="A simple HTML5 Template for new projects.">
-    <meta name="author" content="SitePoint">
+    <title>🥗 {{name}}</title>
+    <meta name="description" content="todo">
+    <meta name="author" content="todo">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
 </head>
 
-
-
-
 <body>
     <header>
-        <center>
-            <h1>
-                🥗 Comida da Boa 🥗
-            </h1>
-        </center>
-
-        <hr />
+        <nav>
+            <a class="brand" href="index.html">
+                <h1 style="width: max-content;">🥗 Comida da Boa 🥗</h1>
+            </a>
+            <span class="separator"></span>
+            <a href="/list">Lista 🛒</a>
+            <a href="#news">Plano 📅</a>
+        </nav>
+        <hr>
     </header>
 
-    <h2>{{name}}</h2>
-    <div style="display: flex; gap: 20px">
-        <a style="align-self: center;" href="/list" class="pure-button nav-button">Adicionar à lista
-            🛒</a>
-        <a style="align-self: center;" href="#news" class="pure-button nav-button">Adicionar ao plano 📅</a>
+    <article>
 
-    </div>
+        <h2>{{name}}</h2>
+        <div style="display: flex; gap: 20px">
+            <a style="align-self: center;" href="/list">Adicionar à lista
+                🛒</a>
+            <a style="align-self: center;" href="#news">Adicionar ao plano 📅</a>
 
-    <div>
-        <h3>Ingredientes</h3>
-        <ul>
-            {{#each ingredients}}
-            <li><code>350 g</code> {{this}} </li>
-            {{/each}}
-        </ul>
-    </div>
+        </div>
 
-    <div>
-        <h3>Preparação</h3>
-        <ol>
-            {{#each instructions}}
-            <li class="alter">{{this}}</li>
-            {{/each}}
-        </ol>
-    </div>
+        <div class="recipe">
 
-    <center>
-        <img src="http://placekitten.com/320/320"></img>
-    </center>
+            <div class="recipe-ingredients">
+                <h3>Ingredientes</h3>
+                <ul>
+                    {{#each ingredients}}
+                    <li><code>350 g</code> {{this}} </li>
+                    {{/each}}
+                </ul>
+            </div>
+
+            <div class="recipe-instructions">
+                <h3>Preparação</h3>
+                <ol>
+                    {{#each instructions}}
+                    <li class="alter">{{this}}</li>
+                    {{/each}}
+                </ol>
+            </div>
+
+        </div>
+        <center>
+            <img src="http://placekitten.com/320/320"></img>
+        </center>
+    </article>
 
 
     <footer>
-        <nav style="display: flex; align-items: center; gap:20px">
-            <a href="/list" class="pure-button nav-button">Feito com ❤ e prandium 👨‍🍳</a>
-            <a style="margin-left: auto" href="/list" class="pure-button nav-button">Lista 🛒</a>
-            <a href="#news" class="pure-button nav-button">Plano 📅</a>
-        </nav>
+        <span style="margin-right: auto;">Feito com ❤ e <a>prandium</a></span>
+        <span><a href="luissilva.eu">Luís Silva</a>, 2022-10-21</span>
     </footer>
     <hr>
 </body>
 
 <style>
+    .separator {
+        margin-left: auto;
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    nav {
+        display: flex;
+        align-items: baseline;
+        gap: 20px;
+    }
+
+    .brand {
+        color: black;
+    }
+
     button {
         margin-right: 0;
     }
@@ -77,6 +98,46 @@
 
     .alter:nth-child(odd) {
         background: #efefef;
+    }
+
+    .recipe {
+        display: flex;
+    }
+
+    .recipe-instructions {
+        width: 70%;
+    }
+
+    .recipe-ingredients {
+        width: 30%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        nav {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0px 20px;
+        }
+
+        h1 {
+            margin-bottom: 0px;
+        }
+
+        .separator {
+            display: none;
+        }
+
+        .recipe {
+            flex-wrap: wrap;
+        }
+
+        .recipe-instructions {
+            width: 100%;
+        }
+
+        .recipe-ingredients {
+            width: 100%;
+        }
     }
 </style>
 
