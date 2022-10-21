@@ -29,11 +29,13 @@ fn register_templates(handlebars: &mut Handlebars) {
 // iterate over all recipes and generate a list of recipes
 fn parse_folder() -> Vec<Recipe> {
     let mut recipes = Vec::new();
+    let mut next_id = 0;
     for entry in glob("./recipes/*.md").expect("Failed to read glob pattern") {
         match entry {
             Ok(path) => {
-                let recipe = parse_recipe(path);
+                let recipe = parse_recipe(path, next_id);
                 recipes.push(recipe);
+                next_id += 1;
             }
             Err(e) => println!("{:?}", e),
         }
@@ -53,10 +55,16 @@ fn collect_output_folder_from_args() -> PathBuf {
 
 fn generate_recipe_pages(handlebars: &Handlebars, recipes: &Vec<Recipe>) {
     let output_folder = collect_output_folder_from_args();
-    for (i, recipe) in recipes.iter().enumerate() {
-        let mut file = File::create(output_folder.join(i.to_string()).with_extension("html"))
-            .expect("Unable to create file");
+    let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
+    for recipe in recipes {
+        let mut file = File::create(
+            output_folder
+                .join(recipe.id.to_string())
+                .with_extension("html"),
+        )
+        .expect("Unable to create file");
         let data = json!({
+            "date": today_date,
             "name": recipe.name,
             "ingredients": recipe.ingredients,
             "instructions": recipe.instructions,
@@ -67,8 +75,60 @@ fn generate_recipe_pages(handlebars: &Handlebars, recipes: &Vec<Recipe>) {
     }
 }
 
+fn generate_index_page(handlebars: &Handlebars, recipes: &Vec<Recipe>) {
+    let output_folder = collect_output_folder_from_args();
+    let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
+    let mut file = File::create(output_folder.join("index.html")).expect("Unable to create file");
+    let mut data = json!({
+        "date": today_date,
+        "recipes": recipes,
+    });
+    let rendered = handlebars.render("index", &data).unwrap();
+    file.write_all(rendered.as_bytes())
+        .expect("Unable to write data");
+}
+
+fn read_config() -> JsonValue {
+    let mut file = File::open("./config.json").expect("Unable to open file");
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)
+        .expect("Unable to read string");
+    let config: JsonValue = serde_json::from_str(&contents).unwrap();
+    config
+}
+
+fn check_config_file_present() {
+    if !PathBuf::from("./config.json").exists() {
+        println!("Do you want to create a config file? [y/n]");
+        let mut input = String::new();
+        std::io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+        if input.trim() != "y" {
+            println!("No prandium without a config file!");
+            std::process::exit(0);
+        }
+        let mut file = File::create("./config.json").expect("Unable to create file");
+        let config = json!({
+            "title": "My Cookbook",
+            "author": "John Doe",
+            "description": "A cookbook for my recipes",
+            "keywords": "recipes, cooking, food",
+            "language": "en",
+            "theme": "default",
+        });
+        let config_string = serde_json::to_string_pretty(&config).unwrap();
+        file.write_all(config_string.as_bytes())
+            .expect("Unable to write data");
+    }
+}
+
 fn main() {
     println!("Hello from Prandium");
+
+    check_config_file_present();
+
+    let config = read_config();
 
     let output_path = collect_output_folder_from_args();
     let current_path = env::current_dir().unwrap();
@@ -80,59 +140,5 @@ fn main() {
 
     generate_recipe_pages(&mut hbs, &recipes);
 
-    /*
-        for path in glob(&g).unwrap().filter_map(Result::ok) {
-            let mut output_file = outpath.clone();
-            let file_name = path.file_name().expect("TODO");
-
-            if file_name == "README.md" {
-                continue;
-            };
-            let filename = path.clone();
-            let metadata = fs::metadata(path.clone()).unwrap();
-
-            println!("Found {:?} -> {}", file_name, recipe_id);
-            let recipe = parse_recipe(path);
-            let title = recipe.name;
-            let time = metadata.modified().unwrap();
-
-            let filename = filename.file_name().unwrap().to_owned();
-
-            let render = hbs
-                .render("recipe", &json!({ "ingredients":{}, "instructions": {} }))
-                .unwrap();
-
-            output_file.push(recipe_id.to_string());
-            output_file.set_extension("html");
-            let mut file = File::create(output_file.clone()).unwrap();
-            file.write_all(render.as_bytes()).expect("TODO");
-
-            let info = output_file
-                .file_name()
-                .unwrap()
-                .to_str()
-                .unwrap()
-                .to_string();
-            index_files.push((info, title, time));
-
-            recipe_id += 1;
-        }
-
-
-        let mut index_file = outpath.clone();
-        index_file.push("index");
-        index_file.set_extension("html");
-
-        let demo: Vec<JsonValue> = index_files
-            .iter()
-            .map(|nota| json!({"title": nota.1, "link": nota.0}))
-            .collect();
-
-        let render = hbs
-            .render("index", &json!({ "recipes": demo }))
-            .expect("TODO");
-
-        let mut file = File::create(index_file).unwrap();
-        file.write_all(&render.as_bytes()).expect("TODO");
-    */
+    generate_index_page(&mut hbs, &recipes);
 }

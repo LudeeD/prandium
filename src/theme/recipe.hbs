@@ -39,8 +39,8 @@
             <div class="recipe-ingredients">
                 <h3>Ingredientes</h3>
                 <ul>
-                    {{#each ingredients}}
-                    <li class="p-ingredient"><code>350 g</code> {{this}} </li>
+                    {{#each ingredients as |ingredient|}}
+                    <li class="p-ingredient"><code>{{ingredient.amount}} </code> {{ingredient.name}} </li>
                     {{/each}}
                 </ul>
             </div>
@@ -48,7 +48,7 @@
             <div class="recipe-instructions">
                 <h3>Preparação</h3>
                 <div class="e-instructions">
-                    <ol>
+                    <ol class="alter">
                         {{#each instructions}}
                         <li>{{this}}</li>
                         {{/each}}
@@ -65,12 +65,16 @@
 
     <footer>
         <span style="margin-right: auto;">Feito com ❤ e <a>prandium</a></span>
-        <span><a href="luissilva.eu">Luís Silva</a>, 2022-10-21</span>
+        <span><a href="https://luissilva.eu">Luís Silva</a>, {{date}}</span>
     </footer>
     <hr>
 </body>
 
 <style>
+    body {
+        font-size: larger;
+    }
+
     .separator {
         margin-left: auto;
     }
@@ -98,7 +102,7 @@
         text-decoration: underline;
     }
 
-    ol:nth-child(odd) {
+    .alter>li:nth-child(odd) {
         background: #efefef;
     }
 
@@ -115,6 +119,10 @@
     }
 
     @media only screen and (max-width: 600px) {
+        body {
+            font-size: medium;
+        }
+
         nav {
             flex-wrap: wrap;
             justify-content: center;

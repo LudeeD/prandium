@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comida da Boa</title>
+    <title>🥗 Comida da Boa</title>
     <meta name="description" content="A simple HTML5 Template for new projects.">
     <meta name="author" content="SitePoint">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
@@ -13,48 +13,81 @@
 
 <body>
     <header>
-        <center>
-            <h1>
-                🥗 Comida da Boa 🥗
-            </h1>
-        </center>
-
-        <hr />
+        <nav>
+            <a class="brand" href="index.html">
+                <h1 style="width: max-content;">🥗 Comida da Boa 🥗</h1>
+            </a>
+            <span class="separator"></span>
+            <a href="/list">Lista 🛒</a>
+            <a href="#news">Plano 📅</a>
+        </nav>
+        <hr>
     </header>
 
-    <div style="display: flex; justify-content: center;">
-        <form id="search">
-            <input type="text" placeholder="Pesquisar...">
-        </form>
-
-        <button>🔎</button>
-    </div>
-
-
     <ul>
-        {{#each recipes}}
-        <li><a href="{{link}}">{{title}}</a></li>
+        {{#each recipes as |recipe|}}
+        <li><a href="{{recipe.id}}.html">{{recipe.name}}</a></li>
         {{/each}}
     </ul>
 
 
     <footer>
-        <nav style="display: flex; align-items: center; gap:20px">
-            <span>Feito com ❤ e <a href="/list" class="pure-button nav-button">prandium</a> 👨‍🍳</span>
-            <a style="margin-left: auto" href="/list" class="pure-button nav-button">Lista 🛒</a>
-            <a href="#news" class="pure-button nav-button">Plano 📅</a>
-        </nav>
+        <span style="margin-right: auto;">Feito com ❤ e <a>prandium</a></span>
+        <span><a href="https://luissilva.eu">Luís Silva</a>, {{date}}</span>
     </footer>
     <hr>
 </body>
 
 <style>
+    body {
+        font-size: larger;
+    }
+
+    .separator {
+        margin-left: auto;
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    nav {
+        display: flex;
+        align-items: baseline;
+        gap: 20px;
+    }
+
+    .brand {
+        color: black;
+    }
+
     button {
         margin-right: 0;
     }
 
     a:hover {
         text-decoration: underline;
+    }
+
+    @media only screen and (max-width: 600px) {
+        body {
+            font-size: medium;
+        }
+
+        nav {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0px 20px;
+        }
+
+        h1 {
+            margin-bottom: 0px;
+        }
+
+        .separator {
+            display: none;
+        }
     }
 </style>
 

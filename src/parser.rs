@@ -1,20 +1,28 @@
 use lazy_static::lazy_static;
 use regex::Regex;
+use serde::Serialize;
 use std::{
     fs::File,
     io::{self, BufRead},
     path::{Path, PathBuf},
 };
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize)]
+pub struct Ingredient {
+    pub name: String,
+    pub amount: String,
+}
+
+#[derive(Debug, Default, Serialize)]
 pub struct Recipe {
+    pub id: usize,
     pub name: String,
     pub attributes: Vec<(String, String)>,
     pub instructions: Vec<String>,
-    pub ingredients: Vec<String>,
+    pub ingredients: Vec<Ingredient>,
 }
 
-pub fn parse_recipe(path: PathBuf) -> Recipe {
+pub fn parse_recipe(path: PathBuf, next_id: usize) -> Recipe {
     lazy_static! {
         static ref RE_TITL: Regex = Regex::new("^# .*$").unwrap();
         static ref RE_ATTR: Regex = Regex::new("^\\* .*$").unwrap();
@@ -40,6 +48,16 @@ pub fn parse_recipe(path: PathBuf) -> Recipe {
                     instructions.push(instruction);
                 } else if RE_INGR.is_match(&ip) {
                     let ingredient = ip.replace("-", "").trim().to_string();
+
+                    let amount = ingredient.split(" ").collect::<Vec<&str>>();
+
+                    let number_of_words = amount.len();
+
+                    let ingredient = Ingredient {
+                        name: amount[..number_of_words - 2].join(" "),
+                        amount: amount[number_of_words - 2..].join(" "),
+                    };
+
                     ingredients.push(ingredient);
                 }
             }
@@ -47,6 +65,7 @@ pub fn parse_recipe(path: PathBuf) -> Recipe {
     }
 
     Recipe {
+        id: next_id,
         name,
         attributes,
         ingredients,
