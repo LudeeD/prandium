@@ -24,9 +24,9 @@
         <hr>
     </header>
 
-    <article>
+    <article class="h-recipe">
 
-        <h2>{{name}}</h2>
+        <h2 class="p-name">{{name}}</h2>
         <div style="display: flex; gap: 20px">
             <a style="align-self: center;" href="/list">Adicionar à lista
                 🛒</a>
@@ -40,18 +40,20 @@
                 <h3>Ingredientes</h3>
                 <ul>
                     {{#each ingredients}}
-                    <li><code>350 g</code> {{this}} </li>
+                    <li class="p-ingredient"><code>350 g</code> {{this}} </li>
                     {{/each}}
                 </ul>
             </div>
 
             <div class="recipe-instructions">
                 <h3>Preparação</h3>
-                <ol>
-                    {{#each instructions}}
-                    <li class="alter">{{this}}</li>
-                    {{/each}}
-                </ol>
+                <div class="e-instructions">
+                    <ol>
+                        {{#each instructions}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ol>
+                </div>
             </div>
 
         </div>
@@ -96,7 +98,7 @@
         text-decoration: underline;
     }
 
-    .alter:nth-child(odd) {
+    ol:nth-child(odd) {
         background: #efefef;
     }
 
