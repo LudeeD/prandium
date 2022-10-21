@@ -35,23 +35,15 @@
 
 
     <ul>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
-        <li><a href="pila">comida dormida</a></li>
+        {{#each recipes}}
+        <li><a href="{{link}}">{{title}}</a></li>
+        {{/each}}
     </ul>
-
 
 
     <footer>
         <nav style="display: flex; align-items: center; gap:20px">
-            <a href="/list" class="pure-button nav-button">Feito com ❤ e prandium 👨‍🍳</a>
+            <span>Feito com ❤ e <a href="/list" class="pure-button nav-button">prandium</a> 👨‍🍳</span>
             <a style="margin-left: auto" href="/list" class="pure-button nav-button">Lista 🛒</a>
             <a href="#news" class="pure-button nav-button">Plano 📅</a>
         </nav>
