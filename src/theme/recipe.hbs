@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🥗 {{name}}</title>
+    <title>{{config.title}}</title>
     <meta name="description" content="todo">
     <meta name="author" content="todo">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
@@ -15,41 +15,41 @@
     <header>
         <nav>
             <a class="brand" href="index.html">
-                <h1 style="width: max-content;">🥗 Comida da Boa 🥗</h1>
+                <h1 style="width: max-content;">{{config.title}}</h1>
             </a>
             <span class="separator"></span>
-            <a href="/list">Lista 🛒</a>
-            <a href="#news">Plano 📅</a>
+            <!-- a href="/list">Lista 🛒</a>
+            <a href="#news">Plano 📅</a-->
         </nav>
         <hr>
     </header>
 
     <article class="h-recipe">
 
-        <h2 class="p-name">{{name}}</h2>
+        <h2 class="p-name">{{recipe.name}}</h2>
         <div style="display: flex; gap: 20px">
-            <a style="align-self: center;" href="/list">Adicionar à lista
+            <!--a style="align-self: center;" href="/list">Adicionar à lista
                 🛒</a>
-            <a style="align-self: center;" href="#news">Adicionar ao plano 📅</a>
+            <a style="align-self: center;" href="#news">Adicionar ao plano 📅</a-->
 
         </div>
 
         <div class="recipe">
 
             <div class="recipe-ingredients">
-                <h3>Ingredientes</h3>
+                <h3>{{config.translations.ingredients}}</h3>
                 <ul>
-                    {{#each ingredients as |ingredient|}}
+                    {{#each recipe.ingredients as |ingredient|}}
                     <li class="p-ingredient"><code>{{ingredient.amount}} </code> {{ingredient.name}} </li>
                     {{/each}}
                 </ul>
             </div>
 
             <div class="recipe-instructions">
-                <h3>Preparação</h3>
+                <h3>{{config.translations.instructions}}</h3>
                 <div class="e-instructions">
                     <ol class="alter">
-                        {{#each instructions}}
+                        {{#each recipe.instructions}}
                         <li>{{this}}</li>
                         {{/each}}
                     </ol>
@@ -64,8 +64,9 @@
 
 
     <footer>
-        <span style="margin-right: auto;">Feito com ❤ e <a>prandium</a></span>
-        <span><a href="https://luissilva.eu">Luís Silva</a>, {{date}}</span>
+        <span style="margin-right: auto;">Made with ❤ and <a
+                href="https://github.com/LudeeD/prandium">prandium</a></span>
+        <span><a href={{config.author_url}}>{{config.author}}</a>, {{config.date}}</span>
     </footer>
     <hr>
 </body>

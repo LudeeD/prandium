@@ -53,9 +53,18 @@ fn collect_output_folder_from_args() -> PathBuf {
     output_folder
 }
 
-fn generate_recipe_pages(handlebars: &Handlebars, recipes: &Vec<Recipe>) {
-    let output_folder = collect_output_folder_from_args();
-    let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
+fn generate_recipe_pages(
+    handlebars: &Handlebars,
+    recipes: &Vec<Recipe>,
+    config: &serde_json::Value,
+) {
+    let output_folder = PathBuf::from(config["output_folder"].as_str().unwrap());
+
+    // check if output folder exists
+    if !output_folder.exists() {
+        fs::create_dir_all(&output_folder).unwrap();
+    }
+
     for recipe in recipes {
         let mut file = File::create(
             output_folder
@@ -64,26 +73,38 @@ fn generate_recipe_pages(handlebars: &Handlebars, recipes: &Vec<Recipe>) {
         )
         .expect("Unable to create file");
         let data = json!({
-            "date": today_date,
             "name": recipe.name,
             "ingredients": recipe.ingredients,
             "instructions": recipe.instructions,
         });
-        let rendered = handlebars.render("recipe", &data).unwrap();
+
+        let full_data = json!({
+            "config": config,
+            "recipe": data,
+        });
+
+        let rendered = handlebars.render("recipe", &full_data).unwrap();
         file.write_all(rendered.as_bytes())
             .expect("Unable to write data");
     }
 }
 
-fn generate_index_page(handlebars: &Handlebars, recipes: &Vec<Recipe>) {
-    let output_folder = collect_output_folder_from_args();
-    let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
+fn generate_index_page(handlebars: &Handlebars, recipes: &Vec<Recipe>, config: &serde_json::Value) {
+    let output_folder = PathBuf::from(config["output_folder"].as_str().unwrap());
+
+    // check if output folder exists
+    if !output_folder.exists() {
+        fs::create_dir_all(&output_folder).unwrap();
+    }
+
     let mut file = File::create(output_folder.join("index.html")).expect("Unable to create file");
-    let mut data = json!({
-        "date": today_date,
+
+    let full_data = json!({
+        "config": config,
         "recipes": recipes,
     });
-    let rendered = handlebars.render("index", &data).unwrap();
+
+    let rendered = handlebars.render("index", &full_data).unwrap();
     file.write_all(rendered.as_bytes())
         .expect("Unable to write data");
 }
@@ -112,10 +133,12 @@ fn check_config_file_present() {
         let config = json!({
             "title": "My Cookbook",
             "author": "John Doe",
+            "author_url": "https://google.com",
             "description": "A cookbook for my recipes",
-            "keywords": "recipes, cooking, food",
-            "language": "en",
-            "theme": "default",
+            "translations" : {
+                "ingredients": "Ingredients",
+                "instructions": "Instructions",
+            }
         });
         let config_string = serde_json::to_string_pretty(&config).unwrap();
         file.write_all(config_string.as_bytes())
@@ -128,9 +151,13 @@ fn main() {
 
     check_config_file_present();
 
-    let config = read_config();
+    let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
 
-    let output_path = collect_output_folder_from_args();
+    let mut config = read_config();
+    config["date"] = json!(today_date);
+
+    //let output_path = collect_output_folder_from_args();
+    let output_path = PathBuf::from(config["output_folder"].as_str().unwrap());
     let current_path = env::current_dir().unwrap();
 
     let mut hbs = Handlebars::new();
@@ -138,7 +165,7 @@ fn main() {
 
     let recipes = parse_folder();
 
-    generate_recipe_pages(&mut hbs, &recipes);
+    generate_recipe_pages(&mut hbs, &recipes, &config);
 
-    generate_index_page(&mut hbs, &recipes);
+    generate_index_page(&mut hbs, &recipes, &config);
 }

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🥗 Comida da Boa</title>
+    <title>{{config.title}}</title>
     <meta name="description" content="A simple HTML5 Template for new projects.">
     <meta name="author" content="SitePoint">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
@@ -15,11 +15,11 @@
     <header>
         <nav>
             <a class="brand" href="index.html">
-                <h1 style="width: max-content;">🥗 Comida da Boa 🥗</h1>
+                <h1 style="width: max-content;">{{config.title}}</h1>
             </a>
             <span class="separator"></span>
-            <a href="/list">Lista 🛒</a>
-            <a href="#news">Plano 📅</a>
+            <!--a href="/list">Lista 🛒</a>
+            <a href="#news">Plano 📅</a-->
         </nav>
         <hr>
     </header>
@@ -32,8 +32,9 @@
 
 
     <footer>
-        <span style="margin-right: auto;">Feito com ❤ e <a>prandium</a></span>
-        <span><a href="https://luissilva.eu">Luís Silva</a>, {{date}}</span>
+        <span style="margin-right: auto;">Made with ❤ and <a
+                href="https://github.com/LudeeD/prandium">prandium</a></span>
+        <span><a href="{{config.author_url}}">{{config.author}}</a>, {{config.date}}</span>
     </footer>
     <hr>
 </body>
