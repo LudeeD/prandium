@@ -1,7 +1,7 @@
 [package]
 name = "prandium"
 description = "Handle your recipes and ingredients"
-homepage = "https://luissilva.eu/prandium/"
+homepage = "https://github.com/LudeeD/prandium"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
