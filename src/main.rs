@@ -134,6 +134,7 @@ fn check_config_file_present() {
             "title": "My Cookbook",
             "author": "John Doe",
             "author_url": "https://google.com",
+            "output_folder": "./docs",
             "description": "A cookbook for my recipes",
             "translations" : {
                 "ingredients": "Ingredients",
@@ -146,19 +147,23 @@ fn check_config_file_present() {
     }
 }
 
+fn create_output_folder(config: &serde_json::Value) {
+    let output_folder = PathBuf::from(config["output_folder"].as_str().unwrap());
+    if !output_folder.exists() {
+        fs::create_dir_all(&output_folder).unwrap();
+    }
+}
+
 fn main() {
     println!("Hello from Prandium");
 
     check_config_file_present();
 
     let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
-
     let mut config = read_config();
     config["date"] = json!(today_date);
 
-    //let output_path = collect_output_folder_from_args();
-    let output_path = PathBuf::from(config["output_folder"].as_str().unwrap());
-    let current_path = env::current_dir().unwrap();
+    create_output_folder(&config);
 
     let mut hbs = Handlebars::new();
     register_templates(&mut hbs);
