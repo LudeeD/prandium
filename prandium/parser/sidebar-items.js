@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["parse_recipe",""],["read_lines",""]],"struct":[["Ingredient",""],["Recipe",""]]};
