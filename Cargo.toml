@@ -2,7 +2,7 @@
 name = "prandium"
 description = "Handle your recipes and ingredients"
 homepage = "https://github.com/LudeeD/prandium"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 
