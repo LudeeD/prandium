@@ -33,8 +33,12 @@ fn register_theme(handlebars: &mut Handlebars) {
             let mut contents = String::new();
             f.read_to_string(&mut contents)
                 .expect("Unable to read string");
+            println!(
+                "Registering template {}",
+                file.file_name().unwrap().to_str().unwrap()
+            );
             handlebars
-                .register_template_string(file.to_str().unwrap(), contents)
+                .register_template_string(file.file_name().unwrap().to_str().unwrap(), contents)
                 .expect("Unable to register template");
         }
     } else {
