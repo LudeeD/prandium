@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"prandium":[["impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.146/serde/ser/trait.Serialize.html\" title=\"trait serde::ser::Serialize\">Serialize</a> for <a class=\"struct\" href=\"prandium/parser/struct.Ingredient.html\" title=\"struct prandium::parser::Ingredient\">Ingredient</a>"],["impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.146/serde/ser/trait.Serialize.html\" title=\"trait serde::ser::Serialize\">Serialize</a> for <a class=\"struct\" href=\"prandium/parser/struct.Recipe.html\" title=\"struct prandium::parser::Recipe\">Recipe</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

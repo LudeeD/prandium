@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"prandium":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html\" title=\"trait core::fmt::Debug\">Debug</a> for <a class=\"struct\" href=\"prandium/parser/struct.Ingredient.html\" title=\"struct prandium::parser::Ingredient\">Ingredient</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html\" title=\"trait core::fmt::Debug\">Debug</a> for <a class=\"struct\" href=\"prandium/parser/struct.Recipe.html\" title=\"struct prandium::parser::Recipe\">Recipe</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

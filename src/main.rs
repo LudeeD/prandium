@@ -14,16 +14,40 @@ use theme::{TEMPLATE_INDEX, TEMPLATE_RECIPE};
 use crate::parser::{parse_recipe, Recipe};
 mod parser;
 
-// register index and recipe template on handlebars
-fn register_templates(handlebars: &mut Handlebars) {
-    let template_index_string = String::from_utf8_lossy(TEMPLATE_INDEX);
-    let template_recipe_string = String::from_utf8_lossy(TEMPLATE_RECIPE);
-    handlebars
-        .register_template_string("index", template_index_string)
-        .unwrap();
-    handlebars
-        .register_template_string("recipe", template_recipe_string)
-        .unwrap();
+// check if theme folder exists, if it does register handlerbars from it, otherwise use default theme
+fn register_theme(handlebars: &mut Handlebars) {
+    let theme_path = PathBuf::from("theme");
+    if theme_path.exists() {
+        println!("Using theme from {}", theme_path.display());
+        let mut theme_files = Vec::new();
+        for entry in glob("theme/*.hbs").expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => {
+                    theme_files.push(path);
+                }
+                Err(e) => println!("{:?}", e),
+            }
+        }
+        for file in theme_files.iter() {
+            let mut f = File::open(file).expect("Unable to open file");
+            let mut contents = String::new();
+            f.read_to_string(&mut contents)
+                .expect("Unable to read string");
+            handlebars
+                .register_template_string(file.to_str().unwrap(), contents)
+                .expect("Unable to register template");
+        }
+    } else {
+        println!("No theme folder found, using default theme");
+        let template_index_string = String::from_utf8_lossy(TEMPLATE_INDEX);
+        let template_recipe_string = String::from_utf8_lossy(TEMPLATE_RECIPE);
+        handlebars
+            .register_template_string("index.hbs", template_index_string)
+            .expect("Unable to register template");
+        handlebars
+            .register_template_string("recipe.hbs", template_recipe_string)
+            .expect("Unable to register template");
+    }
 }
 
 // iterate over all recipes and generate a list of recipes
@@ -83,7 +107,7 @@ fn generate_recipe_pages(
             "recipe": data,
         });
 
-        let rendered = handlebars.render("recipe", &full_data).unwrap();
+        let rendered = handlebars.render("recipe.hbs", &full_data).unwrap();
         file.write_all(rendered.as_bytes())
             .expect("Unable to write data");
     }
@@ -104,7 +128,7 @@ fn generate_index_page(handlebars: &Handlebars, recipes: &Vec<Recipe>, config: &
         "recipes": recipes,
     });
 
-    let rendered = handlebars.render("index", &full_data).unwrap();
+    let rendered = handlebars.render("index.hbs", &full_data).unwrap();
     file.write_all(rendered.as_bytes())
         .expect("Unable to write data");
 }
@@ -166,7 +190,7 @@ fn main() {
     create_output_folder(&config);
 
     let mut hbs = Handlebars::new();
-    register_templates(&mut hbs);
+    register_theme(&mut hbs);
 
     let recipes = parse_folder();
 
