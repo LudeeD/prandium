@@ -9,6 +9,49 @@
     <meta name="description" content="{{config.description}}">
     <meta name="author" content="{{config.author}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Recipe",
+      "name": "{{recipe.name}}",
+      "image": [
+        "https://user-images.githubusercontent.com/9322214/197209446-c239fd9e-d3df-4aa3-9a1c-b6246ea47e27.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "{{config.author}}"
+      },
+      "datePublished": "{{config.date}}",
+      "description": "{{recipe.name}} recipe made with ludeed's prandium",
+      "recipeIngredient": [
+        {{#each recipe.ingredients as |ingredient|}}
+        "{{ingredient.amount}} {{ingredient.name}}" {{#unless @last}} , {{/unless}}
+        {{/each}}      
+        ],
+      "recipeInstructions": [
+        {{#each recipe.instructions}}
+        {
+          "@type": "HowToStep",
+          "text": "{{this}}"
+        }{{#unless @last}} , {{/unless}}
+        {{/each}}
+      ]
+    }
+    </script>
+
+    <!-- Open Graph  -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{config.base_url}}/{{recipe.id}}.html">
+    <meta property="og:title" content="{{recipe.name}}">
+    <meta property="og:description" content="recipe for {{recipe.name}}, generated with ludeed's prandium">
+    <meta property="og:image" itemprop="image" content="http://placekitten.com/320/320">
+
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{config.base_url}}/{{recipe.id}}.html">
+    <meta property="twitter:title" content="{{recipe.name}}">
+    <meta property="twitter:description" content="recipe for {{recipe.name}}, generated with ludeed's prandium">
+    <meta property="twitter:image" content="http://placekitten.com/320/320">
 </head>
 
 <body>

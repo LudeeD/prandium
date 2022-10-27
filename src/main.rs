@@ -101,6 +101,7 @@ fn generate_recipe_pages(
         )
         .expect("Unable to create file");
         let data = json!({
+            "id" : recipe.id,
             "name": recipe.name,
             "ingredients": recipe.ingredients,
             "instructions": recipe.instructions,
@@ -160,6 +161,7 @@ fn check_config_file_present() {
         let mut file = File::create("./config.json").expect("Unable to create file");
         let config = json!({
             "title": "My Cookbook",
+            "base_url": "https://example.com",
             "author": "John Doe",
             "author_url": "https://google.com",
             "output_folder": "./docs",
