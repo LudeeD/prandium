@@ -1,0 +1,92 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+    <meta name="description" content="Demo description">
+    <meta name="author" content="Demo">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a class="brand" href="index.html">
+                <h1 style="width: max-content;">Demo</h1>
+            </a>
+            <span class="separator"></span>
+            <!--a href="/list">Lista 🛒</a>
+            <a href="#news">Plano 📅</a-->
+        </nav>
+        <hr>
+    </header>
+
+    <ul>
+    </ul>
+
+
+    <footer>
+        <span style="margin-right: auto;">Made with ❤ and <a
+                href="https://github.com/LudeeD/prandium">prandium</a></span>
+        <span><a href="www.google.com">Demo</a>, </span>
+    </footer>
+    <hr>
+</body>
+
+<style>
+    body {
+        font-size: larger;
+    }
+
+    .separator {
+        margin-left: auto;
+    }
+
+    footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    nav {
+        display: flex;
+        align-items: baseline;
+        gap: 20px;
+    }
+
+    .brand {
+        color: black;
+    }
+
+    button {
+        margin-right: 0;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    @media only screen and (max-width: 600px) {
+        body {
+            font-size: medium;
+        }
+
+        nav {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0px 20px;
+        }
+
+        h1 {
+            margin-bottom: 0px;
+        }
+
+        .separator {
+            display: none;
+        }
+    }
+</style>
+
+</html>

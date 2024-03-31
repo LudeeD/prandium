@@ -8,6 +8,19 @@ mod theme;
 use cookbook::PrandiumCookbook;
 mod parser;
 
+use clap::Parser;
+
+/// Simple program to greet a person
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    #[arg(long)]
+    init: bool,
+
+    #[arg(long)]
+    server: bool,
+}
+
 fn load_config() -> config::PrandiumConfig {
     let working_dir = env::current_dir().unwrap();
     info!("Working directory: {}", working_dir.display());
@@ -16,7 +29,7 @@ fn load_config() -> config::PrandiumConfig {
         info!("Config file found: {}", config_path.display());
         config::load_config_from_file(&config_path)
     } else {
-        error!("No prandium without a config file!");
+        error!("No prandium without a config file! try running `prandium init` first.");
         std::process::exit(-1);
     }
 }
@@ -34,12 +47,19 @@ fn load_theme() -> theme::PrandiumTheme {
     }
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
+    let args = Args::parse();
     let subscriber = tracing_subscriber::FmtSubscriber::new();
     // use that subscriber to process traces emitted after this point
     tracing::subscriber::set_global_default(subscriber).unwrap();
 
-    println!("Hello from Prandium");
+    if args.init {
+        info!("Initializing folder");
+        config::initialize_folder();
+    }
+
+    info!("Hello from Prandium");
 
     let config = load_config();
     config.setup_output_folder();
@@ -49,6 +69,10 @@ fn main() {
     let cookbook = PrandiumCookbook::new(config, theme);
 
     cookbook.generate();
+
+    if args.server {
+        info!("Starting server");
+    }
 
     //generate_recipe_pages(&mut hbs, &recipes, &config);
 

@@ -1,0 +1,10 @@
+title = "Demo"
+base_url = "http://localhost:8765"
+author = "Demo"
+author_url = "www.google.com"
+output_folder = "output"
+description = "Demo description"
+
+[translations]
+ingredients = "Ingredients"
+instructions = "Instructions"
