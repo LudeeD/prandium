@@ -15,48 +15,9 @@ use theme::{TEMPLATE_INDEX, TEMPLATE_RECIPE};
 
 mod config;
 
+
 use crate::parser::{parse_recipe, Recipe};
 mod parser;
-
-// check if theme folder exists, if it does register handlerbars from it, otherwise use default theme
-fn register_theme(handlebars: &mut Handlebars) {
-    let theme_path = PathBuf::from("theme");
-    if theme_path.exists() {
-        info!("Using theme from {}", theme_path.display());
-        let mut theme_files = Vec::new();
-        for entry in glob("theme/*.hbs").expect("Failed to read glob pattern") {
-            match entry {
-                Ok(path) => {
-                    theme_files.push(path);
-                }
-                Err(e) => error!("{:?}", e),
-            }
-        }
-        for file in theme_files.iter() {
-            let mut f = File::open(file).expect("Unable to open file");
-            let mut contents = String::new();
-            f.read_to_string(&mut contents)
-                .expect("Unable to read string");
-            info!(
-                "Registering template {}",
-                file.file_name().unwrap().to_str().unwrap()
-            );
-            handlebars
-                .register_template_string(file.file_name().unwrap().to_str().unwrap(), contents)
-                .expect("Unable to register template");
-        }
-    } else {
-        warn!("No theme folder found, using default theme");
-        let template_index_string = String::from_utf8_lossy(TEMPLATE_INDEX);
-        let template_recipe_string = String::from_utf8_lossy(TEMPLATE_RECIPE);
-        handlebars
-            .register_template_string("index.hbs", template_index_string)
-            .expect("Unable to register template");
-        handlebars
-            .register_template_string("recipe.hbs", template_recipe_string)
-            .expect("Unable to register template");
-    }
-}
 
 // iterate over all recipes and generate a list of recipes
 fn parse_folder() -> Vec<Recipe> {
@@ -145,6 +106,19 @@ fn load_config() -> config::PrandiumConfig {
     }
 }
 
+fn load_theme() -> theme::PrandiumTheme {
+    // check if theme folder exists
+    let working_dir = env::current_dir().unwrap();
+    let theme_path = working_dir.join("theme");
+    if theme_path.exists() {
+        info!("Using theme from {}", theme_path.display());
+        theme::load_theme_from_folder(&theme_path)
+    } else {
+        warn!("No theme folder found, using default theme");
+        theme::PrandiumTheme::default()
+    }
+}
+
 fn main() {
     let subscriber = tracing_subscriber::FmtSubscriber::new();
     // use that subscriber to process traces emitted after this point
@@ -155,12 +129,11 @@ fn main() {
     let config = load_config();
     config.setup_output_folder();
 
-    let mut hbs = Handlebars::new();
-    register_theme(&mut hbs);
+    let theme = load_theme();
 
     let recipes = parse_folder();
 
-    generate_recipe_pages(&mut hbs, &recipes, &config);
+    //generate_recipe_pages(&mut hbs, &recipes, &config);
 
-    generate_index_page(&mut hbs, &recipes, &config);
+    //generate_index_page(&mut hbs, &recipes, &config);
 }
