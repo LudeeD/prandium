@@ -14,6 +14,8 @@ use std::path::PathBuf;
 mod theme;
 use theme::{TEMPLATE_INDEX, TEMPLATE_RECIPE};
 
+mod config;
+
 use crate::parser::{parse_recipe, Recipe};
 mod parser;
 
@@ -140,33 +142,16 @@ fn read_config() -> JsonValue {
     config
 }
 
-fn check_config_file_present() {
-    if !PathBuf::from("./config.json").exists() {
-        println!("Do you want to create a config file? [y/n]");
-        let mut input = String::new();
-        std::io::stdin()
-            .read_line(&mut input)
-            .expect("Failed to read line");
-        if input.trim() != "y" {
-            error!("No prandium without a config file!");
-            std::process::exit(0);
-        }
-        let mut file = File::create("./config.json").expect("Unable to create file");
-        let config = json!({
-            "title": "My Cookbook",
-            "base_url": "https://example.com",
-            "author": "John Doe",
-            "author_url": "https://google.com",
-            "output_folder": "./docs",
-            "description": "A cookbook for my recipes",
-            "translations" : {
-                "ingredients": "Ingredients",
-                "instructions": "Instructions",
-            }
-        });
-        let config_string = serde_json::to_string_pretty(&config).unwrap();
-        file.write_all(config_string.as_bytes())
-            .expect("Unable to write data");
+fn load_config() -> config::PrandiumConfig {
+    let working_dir = env::current_dir().unwrap();
+    info!("Working directory: {}", working_dir.display());
+    let config_path = working_dir.join("prandium.toml");
+    if config_path.exists() {
+        info!("Config file found: {}", config_path.display());
+        config::load_config_from_file(&config_path)
+    } else {
+        error!("No prandium without a config file!");
+        std::process::exit(-1);
     }
 }
 
@@ -184,7 +169,7 @@ fn main() {
 
     println!("Hello from Prandium");
 
-    check_config_file_present();
+    let config = load_config();
 
     let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
     let mut config = read_config();
