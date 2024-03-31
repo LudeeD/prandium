@@ -2,6 +2,9 @@ use glob::glob;
 use handlebars::Handlebars;
 use handlebars::JsonValue;
 use serde_json::json;
+use tracing::info;
+use tracing::error;
+use tracing::warn;
 use std::env;
 use std::fs::{self, File};
 use std::io::Read;
@@ -18,14 +21,14 @@ mod parser;
 fn register_theme(handlebars: &mut Handlebars) {
     let theme_path = PathBuf::from("theme");
     if theme_path.exists() {
-        println!("Using theme from {}", theme_path.display());
+        info!("Using theme from {}", theme_path.display());
         let mut theme_files = Vec::new();
         for entry in glob("theme/*.hbs").expect("Failed to read glob pattern") {
             match entry {
                 Ok(path) => {
                     theme_files.push(path);
                 }
-                Err(e) => println!("{:?}", e),
+                Err(e) => error!("{:?}", e),
             }
         }
         for file in theme_files.iter() {
@@ -33,7 +36,7 @@ fn register_theme(handlebars: &mut Handlebars) {
             let mut contents = String::new();
             f.read_to_string(&mut contents)
                 .expect("Unable to read string");
-            println!(
+            info!(
                 "Registering template {}",
                 file.file_name().unwrap().to_str().unwrap()
             );
@@ -42,7 +45,7 @@ fn register_theme(handlebars: &mut Handlebars) {
                 .expect("Unable to register template");
         }
     } else {
-        println!("No theme folder found, using default theme");
+        warn!("No theme folder found, using default theme");
         let template_index_string = String::from_utf8_lossy(TEMPLATE_INDEX);
         let template_recipe_string = String::from_utf8_lossy(TEMPLATE_RECIPE);
         handlebars
@@ -65,20 +68,10 @@ fn parse_folder() -> Vec<Recipe> {
                 recipes.push(recipe);
                 next_id += 1;
             }
-            Err(e) => println!("{:?}", e),
+            Err(e) => error!("{:?}", e),
         }
     }
     recipes
-}
-
-fn collect_output_folder_from_args() -> PathBuf {
-    let args: Vec<String> = env::args().collect();
-    let output_folder = match args.len() {
-        1 => PathBuf::from("./docs"),
-        2 => PathBuf::from(&args[1]),
-        _ => panic!("Too many arguments"),
-    };
-    output_folder
 }
 
 fn generate_recipe_pages(
@@ -155,7 +148,7 @@ fn check_config_file_present() {
             .read_line(&mut input)
             .expect("Failed to read line");
         if input.trim() != "y" {
-            println!("No prandium without a config file!");
+            error!("No prandium without a config file!");
             std::process::exit(0);
         }
         let mut file = File::create("./config.json").expect("Unable to create file");
@@ -185,6 +178,10 @@ fn create_output_folder(config: &serde_json::Value) {
 }
 
 fn main() {
+    let subscriber = tracing_subscriber::FmtSubscriber::new();
+    // use that subscriber to process traces emitted after this point
+    tracing::subscriber::set_global_default(subscriber).unwrap();
+
     println!("Hello from Prandium");
 
     check_config_file_present();
