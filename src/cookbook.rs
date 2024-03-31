@@ -11,7 +11,7 @@ use tracing::error;
 
 pub struct PrandiumCookbook {
     theme: PrandiumTheme,
-    config: PrandiumConfig,
+    pub config: PrandiumConfig,
     recipes: Vec<Recipe>,
 }
 

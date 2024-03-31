@@ -7,6 +7,7 @@ mod cookbook;
 mod theme;
 use cookbook::PrandiumCookbook;
 mod parser;
+mod server;
 
 use clap::Parser;
 
@@ -72,7 +73,9 @@ async fn main() {
 
     if args.server {
         info!("Starting server");
+        server::start(cookbook).await;
     }
+
 
     //generate_recipe_pages(&mut hbs, &recipes, &config);
 
