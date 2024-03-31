@@ -1,8 +1,8 @@
-use serde::Deserialize;
-use std::{fs::File, path::Path};
+use serde::{Deserialize, Serialize};
+use std::path::Path;
 use toml;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct PrandiumConfig {
     title: String,
     base_url: String,
@@ -13,7 +13,7 @@ pub struct PrandiumConfig {
     translations: Translations,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct Translations {
     ingredients: String,
     instructions: String,
@@ -43,6 +43,10 @@ impl PrandiumConfig {
         if !output_folder.exists() {
             std::fs::create_dir_all(&output_folder).unwrap();
         }
+    }
+
+    pub fn get_output_folder(&self) -> &str {
+        &self.output_folder
     }
 }
 

@@ -10,6 +10,12 @@ pub struct PrandiumTheme {
     handlebars: Handlebars<'static>,
 }
 
+impl PrandiumTheme {
+    pub fn render(&self, template: &str, data: &serde_json::Value) -> String {
+        self.handlebars.render(template, data).unwrap()
+    }
+}
+
 // imlement default
 impl Default for PrandiumTheme {
     fn default() -> Self {
