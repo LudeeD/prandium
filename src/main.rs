@@ -1,6 +1,5 @@
 use glob::glob;
 use handlebars::Handlebars;
-use handlebars::JsonValue;
 use serde_json::json;
 use tracing::info;
 use tracing::error;
@@ -133,15 +132,6 @@ fn generate_index_page(handlebars: &Handlebars, recipes: &Vec<Recipe>, config: &
         .expect("Unable to write data");
 }
 
-fn read_config() -> JsonValue {
-    let mut file = File::open("./config.json").expect("Unable to open file");
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)
-        .expect("Unable to read string");
-    let config: JsonValue = serde_json::from_str(&contents).unwrap();
-    config
-}
-
 fn load_config() -> config::PrandiumConfig {
     let working_dir = env::current_dir().unwrap();
     info!("Working directory: {}", working_dir.display());
@@ -155,13 +145,6 @@ fn load_config() -> config::PrandiumConfig {
     }
 }
 
-fn create_output_folder(config: &serde_json::Value) {
-    let output_folder = PathBuf::from(config["output_folder"].as_str().unwrap());
-    if !output_folder.exists() {
-        fs::create_dir_all(&output_folder).unwrap();
-    }
-}
-
 fn main() {
     let subscriber = tracing_subscriber::FmtSubscriber::new();
     // use that subscriber to process traces emitted after this point
@@ -170,12 +153,7 @@ fn main() {
     println!("Hello from Prandium");
 
     let config = load_config();
-
-    let today_date = chrono::Local::today().format("%Y-%m-%d").to_string();
-    let mut config = read_config();
-    config["date"] = json!(today_date);
-
-    create_output_folder(&config);
+    config.setup_output_folder();
 
     let mut hbs = Handlebars::new();
     register_theme(&mut hbs);

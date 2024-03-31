@@ -37,6 +37,14 @@ impl Default for PrandiumConfig {
     }
 }
 
+impl PrandiumConfig {
+    pub fn setup_output_folder(&self) {
+        let output_folder = Path::new(&self.output_folder);
+        if !output_folder.exists() {
+            std::fs::create_dir_all(&output_folder).unwrap();
+        }
+    }
+}
 
 pub fn load_config_from_file(file: &Path) -> PrandiumConfig {
     let str_config = std::fs::read_to_string(file).unwrap_or_default();
