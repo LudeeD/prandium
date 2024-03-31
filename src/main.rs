@@ -1,17 +1,10 @@
-use glob::glob;
-use handlebars::Handlebars;
-use serde_json::json;
 use std::env;
-use std::fs::{self, File};
-use std::io::Write;
-use std::path::PathBuf;
 use tracing::error;
 use tracing::info;
 use tracing::warn;
-mod theme;
-use theme::{TEMPLATE_INDEX, TEMPLATE_RECIPE};
 mod config;
 mod cookbook;
+mod theme;
 use cookbook::PrandiumCookbook;
 mod parser;
 
