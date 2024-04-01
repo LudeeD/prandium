@@ -15,14 +15,14 @@ pub struct Ingredient {
 
 #[derive(Debug, Default, Serialize)]
 pub struct Recipe {
-    pub id: usize,
+    pub uid: String,
     pub name: String,
     pub attributes: Vec<(String, String)>,
     pub instructions: Vec<String>,
     pub ingredients: Vec<Ingredient>,
 }
 
-pub fn parse_recipe(path: PathBuf, next_id: usize) -> Recipe {
+pub fn parse_recipe(path: PathBuf) -> Recipe {
     lazy_static! {
         static ref RE_TITL: Regex = Regex::new("^# .*$").unwrap();
         static ref RE_ATTR: Regex = Regex::new("^\\* .*$").unwrap();
@@ -30,6 +30,11 @@ pub fn parse_recipe(path: PathBuf, next_id: usize) -> Recipe {
         static ref RE_INST: Regex = Regex::new("^\\+ .*$").unwrap();
     }
     println!("Parsing {}", path.display());
+    // turn file name into uid
+    let uid = path.file_stem().unwrap().to_str().unwrap().to_string();
+    // replace _ and space with -
+    let uid = uid.replace("_", "-");
+    let uid = uid.replace(" ", "-");
 
     let mut name = String::new();
     let attributes = Vec::new();
@@ -65,7 +70,7 @@ pub fn parse_recipe(path: PathBuf, next_id: usize) -> Recipe {
     }
 
     Recipe {
-        id: next_id,
+        uid,
         name,
         attributes,
         ingredients,

@@ -46,11 +46,11 @@ impl PrandiumCookbook {
         for recipe in self.recipes.iter() {
             let file_path = path
                 .clone()
-                .join(recipe.id.to_string())
+                .join(recipe.uid.to_string())
                 .with_extension("html");
             let mut file = File::create(file_path).expect("Unable to create file");
             let data = json!({
-                "id" : recipe.id,
+                "id" : recipe.uid,
                 "name": recipe.name,
                 "ingredients": recipe.ingredients,
                 "instructions": recipe.instructions,
@@ -86,13 +86,11 @@ impl PrandiumCookbook {
 // iterate over all recipes and generate a list of recipes
 fn parse_folder() -> Vec<Recipe> {
     let mut recipes = Vec::new();
-    let mut next_id = 0;
     for entry in glob("./recipes/*.md").expect("Failed to read glob pattern") {
         match entry {
             Ok(path) => {
-                let recipe = parse_recipe(path, next_id);
+                let recipe = parse_recipe(path);
                 recipes.push(recipe);
-                next_id += 1;
             }
             Err(e) => error!("{:?}", e),
         }
