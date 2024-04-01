@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body class="min-h-screen flex flex-col flex-1">
     <header class="bg-green-500 text-white p-5">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-xl font-bold">{{config.title}}</h1>
@@ -46,8 +46,30 @@
         </div>
     </div>
 
+    <div class="mt-4 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap justify-center -mx-1">
+            <a href="#tag1"
+                class="m-1 bg-green-200 text-green-800 rounded-full px-4 py-2 text-sm font-semibold hover:bg-green-300">Tag
+                1</a>
+            <a href="#tag2"
+                class="m-1 bg-green-200 text-green-800 rounded-full px-4 py-2 text-sm font-semibold hover:bg-green-300">Tag
+                2</a>
+            <a href="#tag3"
+                class="m-1 bg-green-200 text-green-800 rounded-full px-4 py-2 text-sm font-semibold hover:bg-green-300">Tag
+                3</a>
+            <a href="#tag4"
+                class="m-1 bg-green-200 text-green-800 rounded-full px-4 py-2 text-sm font-semibold hover:bg-green-300">Tag
+                4</a>
+            <a href="#tag5"
+                class="m-1 bg-green-200 text-green-800 rounded-full px-4 py-2 text-sm font-semibold hover:bg-green-300">Tag
+                5</a>
+            <!-- Add more tags as needed -->
+        </div>
+    </div>
 
-    <div class="mt-8 container mx-auto px-4 sm:px-6 lg:px-8">
+
+
+    <div class="mt-8 container mx-auto px-4 sm:px-6 lg:px-8 flex-1">
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="flex justify-center items-center w-36 h-36 mx-auto">
@@ -78,21 +100,14 @@
         </div>
     </div>
 
-
-
-
-
-
-
-    <footer class="bg-green-800 text-white mt-12 py-6">
-        <div class="container mx-auto text-center">
+    <footer class="mt-4">
+        <hr>
+        <div class="py-2 container mx-auto flex flex-row justify-between items-center">
             <p>Thank you for visiting Comida Da Boa</p>
-            <p class="text-sm mt-2">Made with <a href="https://www.prandium.com"
-                    class="underline text-green-200 hover:text-green-100">Prandium</a></p>
+            <p class="text-sm">Made with <a href="https://www.prandium.com"
+                    class="underline text-green-800 hover:text-green-600">Prandium</a></p>
         </div>
     </footer>
-
-
 
     <hr>
 </body>
