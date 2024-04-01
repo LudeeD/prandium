@@ -1,6 +1,8 @@
 <!doctype html>
 
-<html lang="en">
+
+<html lang="en" class="flex flex-col">
+
 
 <head>
     <meta charset="utf-8">
@@ -8,190 +10,87 @@
     <title>{{config.title}}</title>
     <meta name="description" content="{{config.description}}">
     <meta name="author" content="{{config.author}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "Recipe",
-      "name": "{{recipe.name}}",
-      "image": [
-        "https://user-images.githubusercontent.com/9322214/197209446-c239fd9e-d3df-4aa3-9a1c-b6246ea47e27.png"
-      ],
-      "author": {
-        "@type": "Person",
-        "name": "{{config.author}}"
-      },
-      "datePublished": "{{config.date}}",
-      "description": "{{recipe.name}} recipe made with ludeed's prandium",
-      "recipeIngredient": [
-        {{#each recipe.ingredients as |ingredient|}}
-        "{{ingredient.amount}} {{ingredient.name}}" {{#unless @last}} , {{/unless}}
-        {{/each}}      
-        ],
-      "recipeInstructions": [
-        {{#each recipe.instructions}}
-        {
-          "@type": "HowToStep",
-          "text": "{{this}}"
-        }{{#unless @last}} , {{/unless}}
-        {{/each}}
-      ]
-    }
-    </script>
-
-    <!-- Open Graph  -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{config.base_url}}/{{recipe.id}}.html">
-    <meta property="og:title" content="{{recipe.name}}">
-    <meta property="og:description" content="recipe for {{recipe.name}}, generated with ludeed's prandium">
-    <meta property="og:image" itemprop="image" content="http://placekitten.com/320/320">
-
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{{config.base_url}}/{{recipe.id}}.html">
-    <meta property="twitter:title" content="{{recipe.name}}">
-    <meta property="twitter:description" content="recipe for {{recipe.name}}, generated with ludeed's prandium">
-    <meta property="twitter:image" content="http://placekitten.com/320/320">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
 </head>
 
-<body>
-    <header>
-        <nav>
-            <a class="brand" href="index.html">
-                <h1 style="width: max-content;">{{config.title}}</h1>
-            </a>
-            <span class="separator"></span>
-            <!-- a href="/list">Lista 🛒</a>
-            <a href="#news">Plano 📅</a-->
-        </nav>
-        <hr>
+<body class="min-h-screen flex flex-col flex-1">
+    <header class="bg-green-500 text-white p-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">{{config.title}}</h1>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="#" class="hover:text-green-200">Profile</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <article class="h-recipe">
 
-        <h2 class="p-name">{{recipe.name}}</h2>
-        <div style="display: flex; gap: 20px">
-            <!--a style="align-self: center;" href="/list">Adicionar à lista
-                🛒</a>
-            <a style="align-self: center;" href="#news">Adicionar ao plano 📅</a-->
-
-        </div>
-
-        <div class="recipe">
-
-            <div class="recipe-ingredients">
-                <h3>{{config.translations.ingredients}}</h3>
-                <ul>
-                    {{#each recipe.ingredients as |ingredient|}}
-                    <li class="p-ingredient"><code>{{ingredient.amount}} </code> {{ingredient.name}} </li>
-                    {{/each}}
-                </ul>
+    <main class="flex-1 container mx-auto p-4 text-lg">
+        <article>
+            <h2 class="text-4xl font-bold text-green-800 my-4">{{recipe.name}}</h2> <!-- Increased title size -->
+            <div class="text-center my-6 min-h-36">
+                <img src="https://via.placeholder.com/144" alt="Recipe Image" class="inline-block rounded-lg">
             </div>
-
-            <div class="recipe-instructions">
-                <h3>{{config.translations.instructions}}</h3>
-                <div class="e-instructions">
-                    <ol class="alter">
+            <div>
+                <details open class="mb-4">
+                    <summary class="text-2xl font-semibold cursor-pointer">{{config.translations.ingredients}}</summary>
+                    <!-- Increased summary size -->
+                    <ul class="list-disc pl-5 mt-2">
+                        {{#each recipe.ingredients as |ingredient|}}
+                        <li>{{ingredient.amount}} {{ingredient.name}}</li>
+                        {{/each}}
+                    </ul>
+                </details>
+                <details>
+                    <summary class="text-2xl font-semibold cursor-pointer">{{config.translations.instructions}}
+                    </summary> <!-- Increased summary size -->
+                    <ol class="list-decimal pl-5 mt-2">
                         {{#each recipe.instructions}}
                         <li>{{this}}</li>
                         {{/each}}
                     </ol>
-                </div>
+                </details>
             </div>
+        </article>
+    </main>
 
+    <footer class="mt-4">
+        <hr>
+        <div class="px-2 py-2 container mx-auto flex flex-row justify-between items-center">
+            <p> Made with ❤ and <a href="https://github.com/LudeeD/prandium" class="underline">prandium</a></p>
+            <span>{{config.author}}, {{config.date}}</span>
         </div>
-        <center>
-            <img src="http://placekitten.com/320/320"></img>
-        </center>
-    </article>
-
-
-    <footer>
-        <span style="margin-right: auto;">Made with ❤ and <a
-                href="https://github.com/LudeeD/prandium">prandium</a></span>
-        <span><a href={{config.author_url}}>{{config.author}}</a>, {{config.date}}</span>
     </footer>
-    <hr>
 </body>
 
 <style>
-    body {
-        font-size: larger;
+    :root {
+        --bg-color: #ffffff;
+        --bg-secondary-color: #f3f3f6;
+        --color-primary: #14854F;
+        --color-lightGrey: #d2d6dd;
+        --color-grey: #747681;
+        --color-darkGrey: #3f4144;
+        --color-error: #d43939;
+        --color-success: #28bd14;
+        --grid-maxWidth: 120rem;
+        --grid-gutter: 2rem;
+        --font-size: 1.6rem;
+        --font-color: black;
+        --font-family-sans: sans-serif;
+        --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
     }
 
-    .separator {
-        margin-left: auto;
+    .container {
+        max-width: 720px;
     }
 
-    footer {
+    .search {
         display: flex;
-        justify-content: center;
-    }
-
-    nav {
-        display: flex;
-        align-items: baseline;
-        gap: 20px;
-    }
-
-    .brand {
-        color: black;
-    }
-
-    button {
-        margin-right: 0;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    .alter>li:nth-child(odd) {
-        background: #efefef;
-    }
-
-    .recipe {
-        display: flex;
-    }
-
-    .recipe-instructions {
-        width: 70%;
-    }
-
-    .recipe-ingredients {
-        width: 30%;
-    }
-
-    @media only screen and (max-width: 600px) {
-        body {
-            font-size: medium;
-        }
-
-        nav {
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0px 20px;
-        }
-
-        h1 {
-            margin-bottom: 0px;
-        }
-
-        .separator {
-            display: none;
-        }
-
-        .recipe {
-            flex-wrap: wrap;
-        }
-
-        .recipe-instructions {
-            width: 100%;
-        }
-
-        .recipe-ingredients {
-            width: 100%;
-        }
+        align-items: center;
     }
 </style>
 

@@ -1,6 +1,8 @@
 <!doctype html>
 
-<html lang="en">
+
+<html lang="en" class="flex flex-col">
+
 
 <head>
     <meta charset="utf-8">
@@ -9,6 +11,8 @@
     <meta name="description" content="{{config.description}}">
     <meta name="author" content="{{config.author}}">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
 </head>
 
 <body class="min-h-screen flex flex-col flex-1">
@@ -71,15 +75,19 @@
 
     <div class="mt-8 container mx-auto px-4 sm:px-6 lg:px-8 flex-1">
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {{#each recipes as |recipe|}}
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="flex justify-center items-center w-36 h-36 mx-auto">
                     <img src="https://via.placeholder.com/144" alt="Grilled Cheese Sandwich"
                         class="object-cover w-36 h-36">
                 </div>
                 <div class="p-4">
-                    <a href="#" class="text-lg text-green-800 hover:text-green-600">Grilled Cheese Sandwich</a>
+                    <a href="{{recipe.uid}}.html"
+                        class="text-lg text-green-800 hover:text-green-600">{{recipe.name}}</a>
                 </div>
             </div>
+            {{/each}}
+
             <div class="bg-white shadow-md rounded-lg overflow-hidden">
                 <div class="flex justify-center items-center w-36 h-36 mx-auto">
                     <img src="https://via.placeholder.com/144" alt="Classic Tomato Soup" class="object-cover w-36 h-36">
@@ -102,10 +110,9 @@
 
     <footer class="mt-4">
         <hr>
-        <div class="py-2 container mx-auto flex flex-row justify-between items-center">
-            <p>Thank you for visiting Comida Da Boa</p>
-            <p class="text-sm">Made with <a href="https://www.prandium.com"
-                    class="underline text-green-800 hover:text-green-600">Prandium</a></p>
+        <div class="px-2 py-2 container mx-auto flex flex-row justify-between items-center">
+            <p> Made with ❤ and <a href="https://github.com/LudeeD/prandium" class="underline">prandium</a></p>
+            <span>{{config.author}}, {{config.date}}</span>
         </div>
     </footer>
 

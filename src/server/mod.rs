@@ -14,8 +14,3 @@ pub async fn start(cookbook: cookbook::PrandiumCookbook) {
     let listener: tokio::net::TcpListener = tokio::net::TcpListener::bind("0.0.0.0:8765").await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
-
-// basic handler that responds with a static string
-async fn root() -> &'static str {
-    "Hello, World!"
-}
