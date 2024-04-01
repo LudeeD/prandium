@@ -12,34 +12,89 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="text-3xl font-bold underline">
-            Hello world!
-        </h1>
-        <nav class="nav">
-            <div class="nav-left">
-                <h1><a class="brand" href="#">{{config.title}}</a></h1>
-            </div>
-        </nav>
+    <header class="bg-green-500 text-white p-5">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">{{config.title}}</h1>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="#" class="hover:text-green-200">Profile</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-        <form action="search.html" method="get" class="search">
-            <input type="text" name="q" placeholder="Search for recipes">
-            <button type="submit">Search</button>
-        </form>
-        <ul>
-            {{#each recipes as |recipe|}}
-            <li><a href="{{recipe.id}}.html">{{recipe.name}}</a></li>
-            {{/each}}
-        </ul>
-
-
-        <footer>
-            <span style="margin-right: auto;">Made with ❤ and <a
-                    href="https://github.com/LudeeD/prandium">prandium</a></span>
-            <span><a href="{{config.author_url}}">{{config.author}}</a>, {{config.date}}</span>
-        </footer>
-        <hr>
+    <div class="bg-green-100">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <h2 class="text-3xl font-bold text-green-800">Bem vindo ao Comida da Boa</h2>
+            <p class="text-green-700 mt-4">Um site onde vais encontrar comida da boa. Sem publicidade estranha, sem
+                videos aleatórios e sem ter que fazer scroll a página inteira para encontrar os ingredientes</p>
+        </div>
     </div>
+
+
+
+    <div class="flex justify-center items-center mt-8">
+        <div class="flex border-2 border-green-500 rounded">
+            <input type="text" class="px-4 py-2 w-full" placeholder="Search for recipes...">
+            <button class="flex items-center justify-center px-4 border-l">
+                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="mt-8 container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="flex justify-center items-center w-36 h-36 mx-auto">
+                    <img src="https://via.placeholder.com/144" alt="Grilled Cheese Sandwich"
+                        class="object-cover w-36 h-36">
+                </div>
+                <div class="p-4">
+                    <a href="#" class="text-lg text-green-800 hover:text-green-600">Grilled Cheese Sandwich</a>
+                </div>
+            </div>
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="flex justify-center items-center w-36 h-36 mx-auto">
+                    <img src="https://via.placeholder.com/144" alt="Classic Tomato Soup" class="object-cover w-36 h-36">
+                </div>
+                <div class="p-4">
+                    <a href="#" class="text-lg text-green-800 hover:text-green-600">Classic Tomato Soup</a>
+                </div>
+            </div>
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="flex justify-center items-center w-36 h-36 mx-auto">
+                    <img src="https://via.placeholder.com/144" alt="Chocolate Brownies" class="object-cover w-36 h-36">
+                </div>
+                <div class="p-4">
+                    <a href="#" class="text-lg text-green-800 hover:text-green-600">Chocolate Brownies</a>
+                </div>
+            </div>
+            <!-- Add more items here -->
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <footer class="bg-green-800 text-white mt-12 py-6">
+        <div class="container mx-auto text-center">
+            <p>Thank you for visiting Comida Da Boa</p>
+            <p class="text-sm mt-2">Made with <a href="https://www.prandium.com"
+                    class="underline text-green-200 hover:text-green-100">Prandium</a></p>
+        </div>
+    </footer>
+
+
+
+    <hr>
 </body>
 
 <style>
