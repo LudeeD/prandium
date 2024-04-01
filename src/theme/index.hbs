@@ -8,87 +8,65 @@
     <title>{{config.title}}</title>
     <meta name="description" content="{{config.description}}">
     <meta name="author" content="{{config.author}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <header>
-        <nav>
-            <a class="brand" href="index.html">
-                <h1 style="width: max-content;">{{config.title}}</h1>
-            </a>
-            <span class="separator"></span>
-            <!--a href="/list">Lista 🛒</a>
-            <a href="#news">Plano 📅</a-->
+    <div class="container">
+        <h1 class="text-3xl font-bold underline">
+            Hello world!
+        </h1>
+        <nav class="nav">
+            <div class="nav-left">
+                <h1><a class="brand" href="#">{{config.title}}</a></h1>
+            </div>
         </nav>
+
+        <form action="search.html" method="get" class="search">
+            <input type="text" name="q" placeholder="Search for recipes">
+            <button type="submit">Search</button>
+        </form>
+        <ul>
+            {{#each recipes as |recipe|}}
+            <li><a href="{{recipe.id}}.html">{{recipe.name}}</a></li>
+            {{/each}}
+        </ul>
+
+
+        <footer>
+            <span style="margin-right: auto;">Made with ❤ and <a
+                    href="https://github.com/LudeeD/prandium">prandium</a></span>
+            <span><a href="{{config.author_url}}">{{config.author}}</a>, {{config.date}}</span>
+        </footer>
         <hr>
-    </header>
-
-    <ul>
-        {{#each recipes as |recipe|}}
-        <li><a href="{{recipe.id}}.html">{{recipe.name}}</a></li>
-        {{/each}}
-    </ul>
-
-
-    <footer>
-        <span style="margin-right: auto;">Made with ❤ and <a
-                href="https://github.com/LudeeD/prandium">prandium</a></span>
-        <span><a href="{{config.author_url}}">{{config.author}}</a>, {{config.date}}</span>
-    </footer>
-    <hr>
+    </div>
 </body>
 
 <style>
-    body {
-        font-size: larger;
+    :root {
+        --bg-color: #ffffff;
+        --bg-secondary-color: #f3f3f6;
+        --color-primary: #14854F;
+        --color-lightGrey: #d2d6dd;
+        --color-grey: #747681;
+        --color-darkGrey: #3f4144;
+        --color-error: #d43939;
+        --color-success: #28bd14;
+        --grid-maxWidth: 120rem;
+        --grid-gutter: 2rem;
+        --font-size: 1.6rem;
+        --font-color: black;
+        --font-family-sans: sans-serif;
+        --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
     }
 
-    .separator {
-        margin-left: auto;
+    .container {
+        max-width: 720px;
     }
 
-    footer {
+    .search {
         display: flex;
-        justify-content: center;
-    }
-
-    nav {
-        display: flex;
-        align-items: baseline;
-        gap: 20px;
-    }
-
-    .brand {
-        color: black;
-    }
-
-    button {
-        margin-right: 0;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    @media only screen and (max-width: 600px) {
-        body {
-            font-size: medium;
-        }
-
-        nav {
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0px 20px;
-        }
-
-        h1 {
-            margin-bottom: 0px;
-        }
-
-        .separator {
-            display: none;
-        }
+        align-items: center;
     }
 </style>
 

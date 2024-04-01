@@ -26,8 +26,17 @@ impl PrandiumCookbook {
     }
 
     pub fn generate(&self) {
+        self.write_css();
         self.generate_index_page();
         self.generate_recipe_pages();
+    }
+
+    fn write_css(&self) {
+        let output_folder = PathBuf::from(self.config.get_output_folder());
+        let css_file = output_folder.join("styles.css");
+        let mut file = File::create(css_file).expect("Unable to create file");
+        file.write_all(self.theme.get_css().as_bytes())
+            .expect("Unable to write data");
     }
 
     fn generate_recipe_pages(&self) {

@@ -5,6 +5,7 @@ use tracing::{error, info};
 
 pub static TEMPLATE_INDEX: &[u8] = include_bytes!("index.hbs");
 pub static TEMPLATE_RECIPE: &[u8] = include_bytes!("recipe.hbs");
+pub static OUTPUT_CSS: &[u8] = include_bytes!("output.css");
 
 pub struct PrandiumTheme {
     handlebars: Handlebars<'static>,
@@ -13,6 +14,10 @@ pub struct PrandiumTheme {
 impl PrandiumTheme {
     pub fn render(&self, template: &str, data: &serde_json::Value) -> String {
         self.handlebars.render(template, data).unwrap()
+    }
+
+    pub fn get_css(&self) -> String {
+        String::from_utf8_lossy(OUTPUT_CSS).to_string()
     }
 }
 

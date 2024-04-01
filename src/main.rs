@@ -71,7 +71,7 @@ async fn main() {
 
     cookbook.generate();
 
-    if args.server {
+    if !args.server {
         info!("Starting server");
         server::start(cookbook).await;
     }

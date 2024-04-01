@@ -2,3 +2,5 @@
 /recipes
 /static
 config.json
+node_modules
+output
